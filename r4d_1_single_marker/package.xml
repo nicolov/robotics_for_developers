@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <name>r4d_1_single_marker</name>
+  <version>0.0.0</version>
+  <description>The r4d_1_single_marker package</description>
+
+  <maintainer email="nicolov@users.noreply.github.com">nicolov</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>r4d_common</build_depend>
+  <run_depend>r4d_common</run_depend>
+
+  <export></export>
+</package>

@@ -1,0 +1,24 @@
+<launch>
+    <arg name="bag_fname"
+         default="$(env HOME)/fiducial_slam/markers_table.bag" />
+
+    <node name="n"
+          pkg="r4d_2_multimarker"
+          type="multimarker_node"
+          output="screen"
+          required="true">
+        <param name="bag_fname" value="$(arg bag_fname)" />
+    </node>
+
+    <node name="record"
+          pkg="rosbag"
+          type="record"
+          required="true"
+          args="-O $(env HOME)/fiducial_slam/out_multimarker_table.bag
+              /solve_time
+              /origin_marker
+              /ext_pose
+              /p_ic
+              /markers_map">
+    </node>
+</launch>

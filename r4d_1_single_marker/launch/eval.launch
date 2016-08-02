@@ -1,0 +1,21 @@
+<launch>
+    <arg name="bag_fname"
+         default="$(env HOME)/fiducial_slam/markers_table.bag" />
+
+    <node name="n"
+          pkg="r4d_1_single_marker"
+          type="single_marker_node"
+          output="screen"
+          required="true">
+        <param name="bag_fname" value="$(arg bag_fname)" />
+    </node>
+
+    <node name="record"
+          pkg="rosbag"
+          type="record"
+          required="true"
+          args="-O $(env HOME)/fiducial_slam/out_singlemarker_table.bag
+              /p_cv
+              /p_gtsam">
+    </node>
+</launch>
