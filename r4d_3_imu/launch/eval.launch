@@ -1,0 +1,50 @@
+<launch>
+    <arg name="bag_fname"
+         default="$(env HOME)/fiducial_slam/markers_table.bag" />
+
+    <!-- Estimation parameters -->
+    <arg name="accel_sigma" default="1.0e-3" />
+    <arg name="gyro_sigma" default="1.0e-4" />
+    <arg name="accel_bias_sigma" default="5e-4" />
+    <arg name="gyro_bias_sigma" default="5e-5" />
+    <arg name="bias_prior_sigma" default="1e-1" />
+    <arg name="pixel_sigma" default="0.5" />
+
+    <!-- Evaluation stuff -->
+    <arg name="pause_correction_start" default="200" />
+    <arg name="pause_correction_duration" default="40" />
+    <arg name="correction_skip" default="1" />
+
+    <node name="n"
+          pkg="r4d_3_imu"
+          type="imu_node"
+          output="screen"
+          required="true">
+        <param name="bag_fname" value="$(arg bag_fname)" />
+
+        <param name="accel_sigma" value="$(arg accel_sigma)" />
+        <param name="gyro_sigma" value="$(arg gyro_sigma)" />
+        <param name="accel_bias_sigma" value="$(arg accel_bias_sigma)" />
+        <param name="gyro_bias_sigma" value="$(arg gyro_bias_sigma)" />
+        <param name="bias_prior_sigma" value="$(arg bias_prior_sigma)" />
+        <param name="pixel_sigma" value="$(arg pixel_sigma)" />
+
+        <param name="pause_correction_start" value="$(arg pause_correction_start)" />
+        <param name="pause_correction_duration" value="$(arg pause_correction_duration)" />
+        <param name="correction_skip" value="$(arg correction_skip)" />
+    </node>
+
+    <node name="record"
+          pkg="rosbag"
+          type="record"
+          required="true"
+          args="-O $(env HOME)/fiducial_slam/out_imu_table_pause_$(arg pause_correction_start)_$(arg pause_correction_duration)_skip_$(arg correction_skip).bag
+              /solve_time
+              /origin_marker
+              /ext_pose
+              /p_ic
+              /p_ic_pred
+              /imu_biases
+              /markers_map">
+    </node>
+</launch>

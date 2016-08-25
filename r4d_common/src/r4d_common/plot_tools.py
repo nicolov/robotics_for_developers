@@ -1,6 +1,7 @@
 import os
 import rosbag
 import pandas as pd
+from tf.transformations import euler_from_quaternion
 from itertools import groupby
 import matplotlib.pyplot as plt
 import pprint
@@ -45,6 +46,13 @@ def simple_plot(s):
 odom_pos = lambda c: lambda m: getattr(m.pose.pose.position, c)
 odom_vel = lambda c: lambda m: getattr(m.twist.twist.linear, c)
 odom_quat = lambda c: lambda m: getattr(m.pose.pose.orientation, c)
+
+def odom_euler(i):
+    def f(m):
+        q = [getattr(m.pose.pose.orientation, c) for c in 'xyzw']
+        angles = euler_from_quaternion(q, axes='szyx')
+        return angles[i]
+    return f
 
 def markers_count():
     def f(msg):
